@@ -1,7 +1,9 @@
 package tp.jEE.Groupe3.Exception;
 
-public class InvalidOperationException extends RuntimeException{
+import lombok.Getter;
 
+public class InvalidOperationException extends RuntimeException{
+    @Getter
     private ErrorCodes errorCodes;
 
     public InvalidOperationException(String message){
