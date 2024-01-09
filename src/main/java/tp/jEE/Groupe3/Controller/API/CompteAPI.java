@@ -16,7 +16,7 @@ import static tp.jEE.Groupe3.Constant.Utils.APP_ROOT;
 
 @Api(APP_ROOT+"comptes")
 public interface CompteAPI {
-    @PostMapping(value = APP_ROOT+"comptes/create",consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = APP_ROOT+"comptes/create/{typeCompte}",consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(value = "enregistrer un compte", notes=" cette methode permet d'enregistrer et modifier un compte",response = CompteDAO.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200,message = "l'object compte a ete bien crée ou modifer")

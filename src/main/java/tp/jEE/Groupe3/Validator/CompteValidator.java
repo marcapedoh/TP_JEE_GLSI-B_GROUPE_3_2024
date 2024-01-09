@@ -11,8 +11,11 @@ public class CompteValidator {
         if(compteDAO==null){
             errors.add("vous passez un objet compte vide"+compteDAO.toString());
         }
-        if(compteDAO.getSolde()==null){
-            errors.add("vous ne pouvez pas créé un compte et ne rien ajouté sur le compte comme sous du moins pas comme ça dans notre banquqe!");
+        if(compteDAO.getSolde()<0){
+            errors.add("vous ne pouvez pas créé un compte et ne rien ajouté sur le compte comme du moins pas comme ça dans notre banquqe!");
+        }
+        if(compteDAO.getTypeCompte()==null){
+            errors.add("vous ne pouvez pas créé un compte sans ajouté");
         }
         if(compteDAO.getNumeroCpt()==null){
             errors.add("bon là ne numero de compte doit enregistré");

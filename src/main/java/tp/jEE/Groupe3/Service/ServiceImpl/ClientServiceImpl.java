@@ -26,19 +26,7 @@ public class ClientServiceImpl implements ClientServices {
         this.clientRepository = clientRepository;
     }
 
-    @Override
-    public ClientDAO save(ClientDAO clientDAO) {
-        List<String> errors= ClientValidator.validate(clientDAO);
-        if(!errors.isEmpty()){
-            log.warn("client non valid");
-            throw new InvalidEntityException("le client que vous passez est non valid", ErrorCodes.CLIENT_NOT_VALID);
-        }
-        return ClientDAO.fromEntity(
-                clientRepository.save(
-                        ClientDAO.toEntity(clientDAO)
-                )
-        );
-    }
+
 
     @Override
     public ClientDAO findById(Integer id) {
