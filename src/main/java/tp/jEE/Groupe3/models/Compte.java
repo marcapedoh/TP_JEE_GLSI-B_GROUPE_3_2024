@@ -23,7 +23,7 @@ public class Compte extends AbstractEntity{
     @Enumerated(EnumType.STRING)
     private TypeCompte typeCompte;
     @Column(name = "solde")
-    private BigDecimal solde;
+    private double solde;
 
     @ManyToOne
     @JoinColumn(name = "idClient")

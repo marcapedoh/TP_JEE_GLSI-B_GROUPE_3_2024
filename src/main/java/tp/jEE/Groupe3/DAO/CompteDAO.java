@@ -25,7 +25,7 @@ public class CompteDAO {
     private Integer id;
     private Iban numeroCpt;
     private TypeCompte typeCompte;
-    private BigDecimal solde;
+    private double solde;
     private ClientDAO client;
     @JsonIgnore
     private List<Transaction> transactionList;

@@ -8,14 +8,19 @@ import tp.jEE.Groupe3.DAO.CompteDAO;
 import tp.jEE.Groupe3.Exception.EntityNotFoundException;
 import tp.jEE.Groupe3.Exception.ErrorCodes;
 import tp.jEE.Groupe3.Exception.InvalidEntityException;
+import tp.jEE.Groupe3.Exception.InvalidOperationException;
 import tp.jEE.Groupe3.Repository.CompteRepository;
 import tp.jEE.Groupe3.Service.CompteServices;
 import tp.jEE.Groupe3.Validator.CompteValidator;
 import tp.jEE.Groupe3.models.Compte;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import static tp.jEE.Groupe3.models.TypeCompte.COURANT;
+import static tp.jEE.Groupe3.models.TypeCompte.EPARGNE;
 
 @Service
 @Slf4j
@@ -63,6 +68,65 @@ public class CompteServiceImpl implements CompteServices {
     }
 
     @Override
+    public boolean rechargerCompte(double montant, Iban iban) {
+        if(montant<0){
+            log.error("vous ne pouvez pas recharger un compte avec un montant negatif");
+
+        }
+        if(iban==null){
+            log.warn("le numero de compte doit etre fourni pour faire un depot/rechargement");
+
+        }
+        Compte compte= compteRepository.findCompteByNumeroCpt(iban).get();
+        if(compte.getTypeCompte()==EPARGNE && montant>5000000){
+            log.warn("pour un compte épargne vous ne pouvez pas faire un depot de "+montant);
+            throw new InvalidOperationException("opération invalide",ErrorCodes.COMPTE_NOT_AVAIBLE_FOR_THIS_OPERATION);
+
+        }else if(compte.getTypeCompte()==COURANT && montant>50000000){
+            log.warn("même pour le compte courant vous ne pouvez pas depassé un certain plafond");
+            throw new InvalidOperationException("opération invalide",ErrorCodes.COMPTE_NOT_AVAIBLE_FOR_THIS_OPERATION);
+
+        }
+        compte.setSolde(compte.getSolde()+montant);
+        return true;
+    }
+
+    @Override
+    public boolean faireRetrait(double montant, Iban iban) {
+        if(montant<0){
+            log.error("vous ne pouvez pas recharger un compte avec un montant negatif");
+        }
+        if(iban==null){
+            log.warn("le numero de compte doit etre fourni pour faire un depot/rechargement");
+
+        }
+        Compte compte= compteRepository.findCompteByNumeroCpt(iban).get();
+        if(compte.getTypeCompte()==EPARGNE && montant>5000000){
+            log.warn("pour un compte épargne vous ne pouvez pas faire un retrait de "+montant);
+            throw new InvalidOperationException("opération invalide",ErrorCodes.COMPTE_NOT_AVAIBLE_FOR_THIS_OPERATION);
+
+        }else if(compte.getTypeCompte()==COURANT && montant>50000000){
+            log.warn("même pour le compte courant vous ne pouvez pas depassé un certain plafond");
+            throw new InvalidOperationException("opération invalide",ErrorCodes.COMPTE_NOT_AVAIBLE_FOR_THIS_OPERATION);
+
+        }
+        if(validCompteForRetrait(montant, compte)==false){
+            log.warn("compte not valid for this operation");
+        }
+        compte.setSolde(compte.getSolde()-montant);
+        return true;
+    }
+
+    private static boolean validCompteForRetrait(double montant, Compte compte) {
+        if(montant > compte.getSolde()){
+            log.warn("solde insuffisant sur votre compte pour pouvoir faire un retrait");
+            return false;
+        }else{
+            return true;
+        }
+    }
+
+    @Override
     public List<CompteDAO> findAll() {
         return compteRepository.findAll().stream()
                 .map(CompteDAO::fromEntity)
@@ -73,6 +137,9 @@ public class CompteServiceImpl implements CompteServices {
     public void delete(Integer id) {
         if(id==null){
             log.warn("vous fournissez un id null");
+        }
+        if(compteRepository.findCompteByClientId(id)==null){
+            throw new InvalidOperationException("Vous ne pouvez pas supprimé un compte qui relié à un client");
         }
         compteRepository.deleteById(id);
     }

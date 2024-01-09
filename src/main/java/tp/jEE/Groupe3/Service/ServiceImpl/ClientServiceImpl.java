@@ -72,6 +72,9 @@ public class ClientServiceImpl implements ClientServices {
         if(id==null){
             log.error("vous passez un id null pour faire la recherche");
         }
+        if(clientRepository.findAllCompte(id)==null){
+            log.error("vous ne pouvez pas supprimé cet objet parceque l'objet est relié à d'autre!");
+        }
         assert id != null;
         clientRepository.deleteById(id);
     }

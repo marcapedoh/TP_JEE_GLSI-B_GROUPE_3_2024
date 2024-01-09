@@ -1,13 +1,12 @@
-package tp.jEE.Groupe3.Service;
+package tp.jEE.Groupe3.Controller.API;
 
 import org.iban4j.Iban;
 import tp.jEE.Groupe3.DAO.CompteDAO;
-import tp.jEE.Groupe3.models.Compte;
 
-import java.math.BigDecimal;
 import java.util.List;
 
-public interface CompteServices {
+public interface CompteAPI {
+
     CompteDAO save(CompteDAO compteDAO);
     CompteDAO findById(Integer id);
     CompteDAO findByNumeroCpt(Iban iban);
