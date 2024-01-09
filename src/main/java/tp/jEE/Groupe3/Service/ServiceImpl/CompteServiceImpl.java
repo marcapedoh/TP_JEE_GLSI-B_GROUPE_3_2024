@@ -101,6 +101,9 @@ public class CompteServiceImpl implements CompteServices {
 
         }
         Compte compte= compteRepository.findCompteByNumeroCpt(iban).get();
+        if(compte==null){
+            log.error("Aucun compte ne correspond au numero de compte donné");
+        }
         if(compte.getTypeCompte()==EPARGNE && montant>5000000){
             log.warn("pour un compte épargne vous ne pouvez pas faire un retrait de "+montant);
             throw new InvalidOperationException("opération invalide",ErrorCodes.COMPTE_NOT_AVAIBLE_FOR_THIS_OPERATION);
