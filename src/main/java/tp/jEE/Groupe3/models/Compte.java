@@ -25,6 +25,8 @@ public class Compte extends AbstractEntity{
     @Column(name = "solde")
     private double solde;
 
+    @Column(name = "codePIN",nullable = false)
+    private String codePin;
     @ManyToOne
     @JoinColumn(name = "idClient")
     private Client client;

@@ -3,8 +3,8 @@ package tp.jEE.Groupe3.Service.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.iban4j.Iban;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import tp.jEE.Groupe3.DAO.ClientDAO;
 import tp.jEE.Groupe3.DAO.CompteDAO;
 import tp.jEE.Groupe3.DAO.TransactionDAO;
 import tp.jEE.Groupe3.Exception.EntityNotFoundException;
@@ -19,10 +19,8 @@ import tp.jEE.Groupe3.Validator.CompteValidator;
 import tp.jEE.Groupe3.models.Compte;
 import tp.jEE.Groupe3.models.TypeTransaction;
 
-import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static tp.jEE.Groupe3.models.TypeCompte.COURANT;
@@ -31,14 +29,16 @@ import static tp.jEE.Groupe3.models.TypeCompte.EPARGNE;
 @Service
 @Slf4j
 public class CompteServiceImpl implements CompteServices {
-    private CompteRepository compteRepository;
-    private TransactionRepository transactionRepository;
-    private ClientRepository clientRepository;
+    private final CompteRepository compteRepository;
+    private final TransactionRepository transactionRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final ClientRepository clientRepository;
 
     @Autowired
-    public CompteServiceImpl(CompteRepository compteRepostory,TransactionRepository transactionRepository,ClientRepository clientRepository) {
+    public CompteServiceImpl(CompteRepository compteRepostory, TransactionRepository transactionRepository, PasswordEncoder passwordEncoder, ClientRepository clientRepository) {
         this.compteRepository = compteRepostory;
         this.transactionRepository=transactionRepository;
+        this.passwordEncoder = passwordEncoder;
         this.clientRepository=clientRepository;
     }
 
@@ -49,6 +49,7 @@ public class CompteServiceImpl implements CompteServices {
             log.warn("le compte que vous passez n'est pas valid{}",compteDAO);
             throw  new InvalidEntityException("Compte non Valid", ErrorCodes.COMPTE_NOT_VALID);
         }
+        compteDAO.setCodePin(passwordEncoder.encode(compteDAO.getCodePin()));
         return CompteDAO.fromEntity(
                 compteRepository.save(
                         CompteDAO.toEntity(compteDAO)
@@ -79,24 +80,8 @@ public class CompteServiceImpl implements CompteServices {
 
     @Override
     public boolean rechargerCompte(double montant, Iban iban) {
-        if(montant<0){
-            log.error("vous ne pouvez pas recharger un compte avec un montant negatif");
-
-        }
-        if(iban==null){
-            log.warn("le numero de compte doit etre fourni pour faire un depot/rechargement");
-
-        }
-        Compte compte= compteRepository.findCompteByNumeroCpt(iban).get();
-        if(compte.getTypeCompte()==EPARGNE && montant>5000000){
-            log.warn("pour un compte épargne vous ne pouvez pas faire un depot de "+montant);
-            throw new InvalidOperationException("opération invalide",ErrorCodes.COMPTE_NOT_AVAIBLE_FOR_THIS_OPERATION);
-
-        }else if(compte.getTypeCompte()==COURANT && montant>50000000){
-            log.warn("même pour le compte courant vous ne pouvez pas depassé un certain plafond");
-            throw new InvalidOperationException("opération invalide",ErrorCodes.COMPTE_NOT_AVAIBLE_FOR_THIS_OPERATION);
-
-        }
+        Compte compte = searchAccountAndValidAmmount(montant, iban);
+        if (compte == null) return false;
         compte.setSolde(compte.getSolde()+montant);
         compteRepository.save(compte);
         transactionRepository.save(
@@ -107,38 +92,97 @@ public class CompteServiceImpl implements CompteServices {
                                 .libelleTran("dépôt/rechargement de "+montant+" sur le compte "+compte.getNumeroCpt())
                                 .typeTransaction(TypeTransaction.DEPOT)
                                 .compte(CompteDAO.fromEntity(compte))
-                                .client(ClientDAO.fromEntity(
-                                        clientRepository.findClientWhoHasACompt(iban)
-                                        )
-                                )
+
                                 .build()
                 )
         );
         return true;
     }
 
-    @Override
-    public boolean faireRetrait(double montant, Iban iban) {
-        if(montant<0){
+    private Compte searchAccountAndValidAmmount(double montant, Iban iban) {
+        if(montant <0){
             log.error("vous ne pouvez pas recharger un compte avec un montant negatif");
+
         }
-        if(iban==null){
+        if(iban ==null){
             log.warn("le numero de compte doit etre fourni pour faire un depot/rechargement");
 
         }
         Compte compte= compteRepository.findCompteByNumeroCpt(iban).get();
         if(compte==null){
-            log.error("Aucun compte ne correspond au numero de compte donné");
+            log.error("aucun compte n'est trouvé pour ce numero de compte");
+            return null;
         }
-        if(compte.getTypeCompte()==EPARGNE && montant>5000000){
-            log.warn("pour un compte épargne vous ne pouvez pas faire un retrait de "+montant);
+        if(compte.getTypeCompte()==EPARGNE && montant >5000000){
+            log.warn("pour un compte épargne vous ne pouvez pas faire un depot de "+ montant);
             throw new InvalidOperationException("opération invalide",ErrorCodes.COMPTE_NOT_AVAIBLE_FOR_THIS_OPERATION);
 
-        }else if(compte.getTypeCompte()==COURANT && montant>50000000){
+        }else if(compte.getTypeCompte()==COURANT && montant >50000000){
             log.warn("même pour le compte courant vous ne pouvez pas depassé un certain plafond");
             throw new InvalidOperationException("opération invalide",ErrorCodes.COMPTE_NOT_AVAIBLE_FOR_THIS_OPERATION);
 
         }
+        return compte;
+    }
+
+    @Override
+    public TransactionDAO faireVirement(Iban iban1, Iban iban2, double montant) {
+        validateParamaterInformation(iban1, iban2, montant);
+        Compte compte= compteRepository.findCompteByNumeroCpt(iban1).get();
+        Compte compte1= compteRepository.findCompteByNumeroCpt(iban2).get();
+        verificationOfAccountsValidationForpoeration(compte, compte1);
+        if(compte.getSolde()<compte1.getSolde()){
+            throw new InvalidOperationException("vous ne pouvez pas faire un virement si le compte de depot a un montant suppérieur au compte de retrait",ErrorCodes.ACCOUNT_BALANCE_NOT_SUPPORTED);
+        }
+        compte.setSolde(compte.getSolde()-montant);
+        compte1.setSolde(compte1.getSolde()+montant);
+        compteRepository.save(compte);
+        compteRepository.save(compte1);
+
+        return TransactionDAO.fromEntity(
+                transactionRepository.save(
+                    TransactionDAO.toEntity(
+                            TransactionDAO.builder()
+                                    .dateCreation(Instant.now())
+                                    .montant(montant)
+                                    .libelleTran("Virement de "+montant+" sur le compte "+compte.getNumeroCpt())
+                                    .typeTransaction(TypeTransaction.DEPOT)
+                                    .compte(CompteDAO.fromEntity(compte))
+                                    .build()
+                )
+        ));
+    }
+
+    private static void validateParamaterInformation(Iban iban1, Iban iban2, double montant) {
+        if(montant <0){
+            log.error("vous ne pouvez pas recharger un compte avec un montant negatif");
+
+        }
+        if(iban1 ==null){
+            log.warn("le numero de compte doit etre fourni pour faire un depot/rechargement");
+
+        }
+        if(iban2 ==null){
+            log.warn("le numero de compte doit etre fourni pour faire un depot/rechargement");
+
+        }
+    }
+
+    private static void verificationOfAccountsValidationForpoeration(Compte compte, Compte compte1) {
+        if(compte ==null && compte1 ==null){
+            log.error("les comptes pour le depot et le compte de retrait n'ont pas été trouvé");
+        }
+        if(compte ==null ){
+            log.error("le compte expéditeur n'est pas trouvé");
+        }
+        if(compte1 ==null ){
+            log.error("le compte recepteur n'est pas trouvé");
+        }
+    }
+
+    @Override
+    public boolean faireRetrait(double montant, Iban iban) {
+        Compte compte = validateNumberOfAccountAndValideAmount(montant, iban);
         if(validCompteForRetrait(montant, compte)==false){
             log.warn("compte not valid for this operation");
         }
@@ -152,14 +196,34 @@ public class CompteServiceImpl implements CompteServices {
                                 .libelleTran("Retrait du "+montant+" sur le compte "+compte.getNumeroCpt())
                                 .typeTransaction(TypeTransaction.RETRAIT)
                                 .compte(CompteDAO.fromEntity(compte))
-                                .client(ClientDAO.fromEntity(
-                                                clientRepository.findClientWhoHasACompt(iban)
-                                        )
-                                )
                                 .build()
                 )
         );
         return true;
+    }
+
+    private Compte validateNumberOfAccountAndValideAmount(double montant, Iban iban) {
+        if(montant <0){
+            log.error("vous ne pouvez pas recharger un compte avec un montant negatif");
+        }
+        if(iban ==null){
+            log.warn("le numero de compte doit etre fourni pour faire un depot/rechargement");
+
+        }
+        Compte compte= compteRepository.findCompteByNumeroCpt(iban).get();
+        if(compte==null){
+            log.error("Aucun compte ne correspond au numero de compte donné");
+        }
+        if(compte.getTypeCompte()==EPARGNE && montant >5000000){
+            log.warn("pour un compte épargne vous ne pouvez pas faire un retrait de "+ montant);
+            throw new InvalidOperationException("opération invalide",ErrorCodes.COMPTE_NOT_AVAIBLE_FOR_THIS_OPERATION);
+
+        }else if(compte.getTypeCompte()==COURANT && montant >50000000){
+            log.warn("même pour le compte courant vous ne pouvez pas depassé un certain plafond");
+            throw new InvalidOperationException("opération invalide",ErrorCodes.COMPTE_NOT_AVAIBLE_FOR_THIS_OPERATION);
+
+        }
+        return compte;
     }
 
     private static boolean validCompteForRetrait(double montant, Compte compte) {

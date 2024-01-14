@@ -13,9 +13,8 @@ import java.util.Optional;
 public interface ClientRepository extends JpaRepository<Client,Integer> {
     Optional<Client> findClientByUsername(String username);
     Optional<Client> findClientByNom(String nom);
-    @Query("select * from  Compte cpt where cpt.client.id= :idClient")
+    @Query("select cpt from  Compte cpt where cpt.client.id= :idClient")
     List<Compte> findAllCompte(@Param("idClient") Integer id);
-
     @Query("select clt from Compte c, Client clt where c.id=clt.id and c.numeroCpt= :iban")
     Client findClientWhoHasACompt(@Param("iban")Iban iban);
 }

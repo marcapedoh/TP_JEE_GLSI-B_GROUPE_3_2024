@@ -43,8 +43,6 @@ public class Client extends AbstractEntity implements UserDetails {
 
     @OneToMany(mappedBy = "client")
     private List<Compte> listCompte;
-    @OneToMany(mappedBy = "client")
-    private List<Transaction> transactionList;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

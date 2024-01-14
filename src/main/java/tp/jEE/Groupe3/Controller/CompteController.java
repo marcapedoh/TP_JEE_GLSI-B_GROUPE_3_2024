@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
 import tp.jEE.Groupe3.Controller.API.CompteAPI;
 import tp.jEE.Groupe3.DAO.CompteDAO;
+import tp.jEE.Groupe3.DAO.TransactionDAO;
 import tp.jEE.Groupe3.Service.CompteServices;
 
 import java.util.List;
@@ -38,6 +39,11 @@ public class CompteController implements CompteAPI {
     @Override
     public boolean rechargerCompte(double montant, Iban iban) {
         return compteServices.rechargerCompte(montant,iban);
+    }
+
+    @Override
+    public TransactionDAO faireVirement(Iban iban1, Iban iban2, double montant) {
+        return compteServices.faireVirement(iban1,iban2,montant);
     }
 
     @Override

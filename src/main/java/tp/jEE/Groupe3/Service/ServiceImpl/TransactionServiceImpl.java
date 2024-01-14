@@ -75,7 +75,7 @@ public class TransactionServiceImpl implements TransactionServices {
             return;
         }
         Optional<Transaction> transaction=transactionRepository.findById(id);
-        if (transaction.get().getClient()==null && transaction.get().getCompte()==null){
+        if (transaction.get().getCompte()==null && transaction.get().getCompte().getClient()==null){
             transactionRepository.deleteById(id);
         }else{
             throw new InvalidOperationException("vous ne pouvez pas supprimé une transaction qui est lié à des comptes et à des clients");

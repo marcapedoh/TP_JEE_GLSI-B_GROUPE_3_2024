@@ -29,7 +29,6 @@ public class TransactionDAO {
     private String libelleTran;
     private TypeTransaction typeTransaction;
     private CompteDAO compte;
-    private ClientDAO client;
 
     public static TransactionDAO fromEntity(Transaction transaction){
         if(transaction==null){
@@ -42,7 +41,6 @@ public class TransactionDAO {
                 .typeTransaction(transaction.getTypeTransaction())
                 .libelleTran(transaction.getLibelleTran())
                 .compte(CompteDAO.fromEntity(transaction.getCompte()))
-                .client(ClientDAO.fromEntity(transaction.getClient()))
                 .build();
     }
 
@@ -57,7 +55,6 @@ public class TransactionDAO {
                 .typeTransaction(transactionDAO.getTypeTransaction())
                 .libelleTran(transactionDAO.getLibelleTran())
                 .compte(CompteDAO.toEntity(transactionDAO.getCompte()))
-                .client(ClientDAO.toEntity(transactionDAO.getClient()))
                 .build();
     }
 }

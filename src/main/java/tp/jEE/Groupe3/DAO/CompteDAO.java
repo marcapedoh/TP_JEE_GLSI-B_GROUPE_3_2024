@@ -26,6 +26,7 @@ public class CompteDAO {
     private Iban numeroCpt;
     private TypeCompte typeCompte;
     private double solde;
+    private String codePin;
     private ClientDAO client;
     @JsonIgnore
     private List<Transaction> transactionList;
@@ -37,6 +38,7 @@ public class CompteDAO {
                 .numeroCpt(compte.getNumeroCpt())
                 .typeCompte(compte.getTypeCompte())
                 .solde(compte.getSolde())
+                .codePin(compte.getCodePin())
                 .client(ClientDAO.fromEntity(compte.getClient()))
                 .build();
     }
@@ -49,6 +51,7 @@ public class CompteDAO {
         compte.setId(compteDAO.getId());
         compte.setNumeroCpt(compteDAO.getNumeroCpt());
         compte.setTypeCompte(compteDAO.getTypeCompte());
+        compte.setCodePin(compte.getCodePin());
         compte.setSolde(compteDAO.getSolde());
         compte.setClient(ClientDAO.toEntity(compteDAO.getClient()));
         return compte;

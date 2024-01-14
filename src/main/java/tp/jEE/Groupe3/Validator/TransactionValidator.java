@@ -17,13 +17,11 @@ public class TransactionValidator {
             errors.add("on doit pouvoir savoir quel compte est associé à une transaction");
 
         }
-        if(transactionDAO.getMontant()==null){
-            errors.add("vous ne pouvez pas construire un objet transaction sans fournir le montant de la transaction");
+        if(transactionDAO.getMontant()<0){
+            errors.add("vous ne pouvez pas construire un objet transaction avec le montant de la transaction négatif");
         }
 
-        if(transactionDAO.getClient()==null){
-            errors.add("vous créez une transaction sans fournir le client qui fait la transaction... vous voulez que la banque fasse faillite c'est ça ?♠♠○-");
-        }
+
         if(transactionDAO.getCompte()==null){
             errors.add("on doit pouvoir savoir quel compte est associé à une transaction");
         }

@@ -40,6 +40,10 @@ public interface CompteAPI {
     boolean rechargerCompte(@PathVariable("montant") double montant,@PathVariable("iban") Iban iban);
     @GetMapping(value = APP_ROOT+"comptes/faireRetrait/{montant}/{iban}",produces = MediaType.APPLICATION_JSON_VALUE)
     boolean faireRetrait(@PathVariable("montant") double montant,@PathVariable("iban") Iban iban);
+
+
+    @PostMapping(value = APP_ROOT+"comptes/faireVirement/{iban1}/{iban2}/{montant}",produces = MediaType.APPLICATION_JSON_VALUE)
+    TransactionDAO faireVirement(@PathVariable("iban1") Iban iban1,@PathVariable("iban2") Iban iban2,@PathVariable("montant") double montant);
     @GetMapping(value = APP_ROOT+"comptes/all",produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(value = "Renvoi la liste des comptes", notes=" cette methode permet de retourner des comptes ",responseContainer = "List<CompteDAO>")
     @ApiResponses(value = {

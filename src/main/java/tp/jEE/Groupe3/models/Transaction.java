@@ -31,7 +31,5 @@ public class Transaction{
     @JoinColumn(name = "idCompte")
     private Compte compte;
 
-    @ManyToOne
-    @JoinColumn(name = "idClient")
-    private Client client;
+
 }
