@@ -1,5 +1,6 @@
 package tp.jEE.Groupe3.Repository;
 
+import org.iban4j.Iban;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -14,4 +15,7 @@ public interface ClientRepository extends JpaRepository<Client,Integer> {
     Optional<Client> findClientByNom(String nom);
     @Query("select * from  Compte cpt where cpt.client.id= :idClient")
     List<Compte> findAllCompte(@Param("idClient") Integer id);
+
+    @Query("select clt from Compte c, Client clt where c.id=clt.id and c.numeroCpt= :iban")
+    Client findClientWhoHasACompt(@Param("iban")Iban iban);
 }

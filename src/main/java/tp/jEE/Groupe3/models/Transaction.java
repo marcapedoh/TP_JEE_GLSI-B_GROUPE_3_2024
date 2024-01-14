@@ -21,9 +21,12 @@ public class Transaction{
     @Column(name ="dateCreation",nullable = false,updatable = false)
     private Instant dateCreation;
     @Column(name = "montant")
-    private BigDecimal montant;
+    private double montant;
     @Column(name = "libelleTrans")
     private String libelleTran;
+    @Column(name = "typeTransaction")
+    @Enumerated(EnumType.STRING)
+    private TypeTransaction typeTransaction;
     @ManyToOne
     @JoinColumn(name = "idCompte")
     private Compte compte;

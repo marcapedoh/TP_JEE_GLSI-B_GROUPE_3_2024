@@ -12,6 +12,7 @@ import org.springframework.data.annotation.CreatedDate;
 import tp.jEE.Groupe3.models.Client;
 import tp.jEE.Groupe3.models.Compte;
 import tp.jEE.Groupe3.models.Transaction;
+import tp.jEE.Groupe3.models.TypeTransaction;
 
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -24,8 +25,9 @@ import java.time.Instant;
 public class TransactionDAO {
     private Integer id;
     private Instant dateCreation;
-    private BigDecimal montant;
+    private double montant;
     private String libelleTran;
+    private TypeTransaction typeTransaction;
     private CompteDAO compte;
     private ClientDAO client;
 
@@ -37,6 +39,7 @@ public class TransactionDAO {
                 .id(transaction.getId())
                 .dateCreation(transaction.getDateCreation())
                 .montant(transaction.getMontant())
+                .typeTransaction(transaction.getTypeTransaction())
                 .libelleTran(transaction.getLibelleTran())
                 .compte(CompteDAO.fromEntity(transaction.getCompte()))
                 .client(ClientDAO.fromEntity(transaction.getClient()))
@@ -51,6 +54,7 @@ public class TransactionDAO {
                 .id(transactionDAO.getId())
                 .dateCreation(transactionDAO.getDateCreation())
                 .montant(transactionDAO.getMontant())
+                .typeTransaction(transactionDAO.getTypeTransaction())
                 .libelleTran(transactionDAO.getLibelleTran())
                 .compte(CompteDAO.toEntity(transactionDAO.getCompte()))
                 .client(ClientDAO.toEntity(transactionDAO.getClient()))

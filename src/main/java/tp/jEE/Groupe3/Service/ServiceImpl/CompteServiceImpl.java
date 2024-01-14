@@ -4,17 +4,23 @@ import lombok.extern.slf4j.Slf4j;
 import org.iban4j.Iban;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import tp.jEE.Groupe3.DAO.ClientDAO;
 import tp.jEE.Groupe3.DAO.CompteDAO;
+import tp.jEE.Groupe3.DAO.TransactionDAO;
 import tp.jEE.Groupe3.Exception.EntityNotFoundException;
 import tp.jEE.Groupe3.Exception.ErrorCodes;
 import tp.jEE.Groupe3.Exception.InvalidEntityException;
 import tp.jEE.Groupe3.Exception.InvalidOperationException;
+import tp.jEE.Groupe3.Repository.ClientRepository;
 import tp.jEE.Groupe3.Repository.CompteRepository;
+import tp.jEE.Groupe3.Repository.TransactionRepository;
 import tp.jEE.Groupe3.Service.CompteServices;
 import tp.jEE.Groupe3.Validator.CompteValidator;
 import tp.jEE.Groupe3.models.Compte;
+import tp.jEE.Groupe3.models.TypeTransaction;
 
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -26,10 +32,14 @@ import static tp.jEE.Groupe3.models.TypeCompte.EPARGNE;
 @Slf4j
 public class CompteServiceImpl implements CompteServices {
     private CompteRepository compteRepository;
+    private TransactionRepository transactionRepository;
+    private ClientRepository clientRepository;
 
     @Autowired
-    public CompteServiceImpl(CompteRepository compteRepostory) {
+    public CompteServiceImpl(CompteRepository compteRepostory,TransactionRepository transactionRepository,ClientRepository clientRepository) {
         this.compteRepository = compteRepostory;
+        this.transactionRepository=transactionRepository;
+        this.clientRepository=clientRepository;
     }
 
     @Override
@@ -88,6 +98,22 @@ public class CompteServiceImpl implements CompteServices {
 
         }
         compte.setSolde(compte.getSolde()+montant);
+        compteRepository.save(compte);
+        transactionRepository.save(
+                TransactionDAO.toEntity(
+                        TransactionDAO.builder()
+                                .dateCreation(Instant.now())
+                                .montant(montant)
+                                .libelleTran("dépôt/rechargement de "+montant+" sur le compte "+compte.getNumeroCpt())
+                                .typeTransaction(TypeTransaction.DEPOT)
+                                .compte(CompteDAO.fromEntity(compte))
+                                .client(ClientDAO.fromEntity(
+                                        clientRepository.findClientWhoHasACompt(iban)
+                                        )
+                                )
+                                .build()
+                )
+        );
         return true;
     }
 
@@ -117,6 +143,22 @@ public class CompteServiceImpl implements CompteServices {
             log.warn("compte not valid for this operation");
         }
         compte.setSolde(compte.getSolde()-montant);
+        compteRepository.save(compte);
+        transactionRepository.save(
+                TransactionDAO.toEntity(
+                        TransactionDAO.builder()
+                                .dateCreation(Instant.now())
+                                .montant(montant)
+                                .libelleTran("Retrait du "+montant+" sur le compte "+compte.getNumeroCpt())
+                                .typeTransaction(TypeTransaction.RETRAIT)
+                                .compte(CompteDAO.fromEntity(compte))
+                                .client(ClientDAO.fromEntity(
+                                                clientRepository.findClientWhoHasACompt(iban)
+                                        )
+                                )
+                                .build()
+                )
+        );
         return true;
     }
 
