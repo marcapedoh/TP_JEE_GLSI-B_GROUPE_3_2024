@@ -20,9 +20,11 @@ import tp.jEE.Groupe3.models.Compte;
 import tp.jEE.Groupe3.models.TypeTransaction;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static tp.jEE.Groupe3.DAO.CompteDAO.fromEntity;
 import static tp.jEE.Groupe3.models.TypeCompte.COURANT;
 import static tp.jEE.Groupe3.models.TypeCompte.EPARGNE;
 
@@ -50,7 +52,7 @@ public class CompteServiceImpl implements CompteServices {
             throw  new InvalidEntityException("Compte non Valid", ErrorCodes.COMPTE_NOT_VALID);
         }
         compteDAO.setCodePin(passwordEncoder.encode(compteDAO.getCodePin()));
-        return CompteDAO.fromEntity(
+        return fromEntity(
                 compteRepository.save(
                         CompteDAO.toEntity(compteDAO)
                 )
@@ -91,8 +93,7 @@ public class CompteServiceImpl implements CompteServices {
                                 .montant(montant)
                                 .libelleTran("dépôt/rechargement de "+montant+" sur le compte "+compte.getNumeroCpt())
                                 .typeTransaction(TypeTransaction.DEPOT)
-                                .compte(CompteDAO.fromEntity(compte))
-
+                                .compte(fromEntity(compte))
                                 .build()
                 )
         );
@@ -127,12 +128,18 @@ public class CompteServiceImpl implements CompteServices {
 
     @Override
     public TransactionDAO faireVirement(Iban iban1, Iban iban2, double montant) {
-        validateParamaterInformation(iban1, iban2, montant);
+        List<String> errors= validateParamaterInformation(iban1, iban2, montant);
+        if(!errors.isEmpty()){
+            throw new InvalidEntityException("les informations en parametre ne sont pas valide");
+        }
         Compte compte= compteRepository.findCompteByNumeroCpt(iban1).get();
         Compte compte1= compteRepository.findCompteByNumeroCpt(iban2).get();
-        verificationOfAccountsValidationForpoeration(compte, compte1);
-        if(compte.getSolde()<compte1.getSolde()){
-            throw new InvalidOperationException("vous ne pouvez pas faire un virement si le compte de depot a un montant suppérieur au compte de retrait",ErrorCodes.ACCOUNT_BALANCE_NOT_SUPPORTED);
+        List<String> errors1 = verificationOfAccountsValidationForpoeration(compte, compte1);
+        if(!errors1.isEmpty()){
+            throw new InvalidEntityException("les informations en parametre pour les comptes ne sont pas valide");
+        }
+        if(compte.getSolde()<montant){
+            throw new InvalidOperationException("vous ne pouvez pas faire un virement si le compte d'envoi a un montant inferieur au montant à envoyer",ErrorCodes.ACCOUNT_BALANCE_NOT_SUPPORTED);
         }
         compte.setSolde(compte.getSolde()-montant);
         compte1.setSolde(compte1.getSolde()+montant);
@@ -146,38 +153,39 @@ public class CompteServiceImpl implements CompteServices {
                                     .dateCreation(Instant.now())
                                     .montant(montant)
                                     .libelleTran("Virement de "+montant+" sur le compte "+compte.getNumeroCpt())
-                                    .typeTransaction(TypeTransaction.DEPOT)
-                                    .compte(CompteDAO.fromEntity(compte))
+                                    .typeTransaction(TypeTransaction.VIREMENT)
+                                    .compte(fromEntity(compte))
                                     .build()
                 )
         ));
     }
 
-    private static void validateParamaterInformation(Iban iban1, Iban iban2, double montant) {
+    private static List<String> validateParamaterInformation(Iban iban1, Iban iban2, double montant) {
+        List<String> errors=new ArrayList<>();
         if(montant <0){
-            log.error("vous ne pouvez pas recharger un compte avec un montant negatif");
-
+            errors.add("vous ne pouvez pas recharger un compte avec un montant negatif");
         }
         if(iban1 ==null){
-            log.warn("le numero de compte doit etre fourni pour faire un depot/rechargement");
-
+            errors.add("le numero de compte doit etre fourni pour faire un depot/rechargement");
         }
         if(iban2 ==null){
-            log.warn("le numero de compte doit etre fourni pour faire un depot/rechargement");
-
+            errors.add("le numero de compte doit etre fourni pour faire un depot/rechargement");
         }
+        return errors;
     }
 
-    private static void verificationOfAccountsValidationForpoeration(Compte compte, Compte compte1) {
-        if(compte ==null && compte1 ==null){
-            log.error("les comptes pour le depot et le compte de retrait n'ont pas été trouvé");
+    private static List<String> verificationOfAccountsValidationForpoeration(Compte compte, Compte compte1) {
+        List<String> errors=new ArrayList<>();
+        if(CompteValidator.validate(CompteDAO.fromEntity(compte)).isEmpty() && CompteValidator.validate(CompteDAO.fromEntity(compte1)).isEmpty()){
+            errors.add("les comptes pour le depot et le compte de retrait ne sont pas valide");
         }
-        if(compte ==null ){
-            log.error("le compte expéditeur n'est pas trouvé");
+        if(CompteValidator.validate(CompteDAO.fromEntity(compte)).isEmpty()){
+            errors.add("le compte expéditeur n'est pas valide");
         }
-        if(compte1 ==null ){
-            log.error("le compte recepteur n'est pas trouvé");
+        if(CompteValidator.validate(CompteDAO.fromEntity(compte1)).isEmpty()){
+            errors.add("le compte recepteur n'est pas valide");
         }
+        return errors;
     }
 
     @Override
@@ -195,7 +203,7 @@ public class CompteServiceImpl implements CompteServices {
                                 .montant(montant)
                                 .libelleTran("Retrait du "+montant+" sur le compte "+compte.getNumeroCpt())
                                 .typeTransaction(TypeTransaction.RETRAIT)
-                                .compte(CompteDAO.fromEntity(compte))
+                                .compte(fromEntity(compte))
                                 .build()
                 )
         );

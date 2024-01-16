@@ -14,12 +14,6 @@ import static tp.jEE.Groupe3.Constant.Utils.APP_ROOT;
 
 @Api(APP_ROOT+"transactions")
 public interface TransactionAPI {
-    @PostMapping(value = APP_ROOT + "transactions/create", consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
-    @ApiOperation(value = "enregistrer une transaction", notes=" cette methode permet d'enregistrer et modifier une transaction",response = TransactionDAO.class)
-    @ApiResponses(value = {
-            @ApiResponse(code = 200,message = "l'object transaction a ete bien crée ou modifer")
-    })
-    TransactionDAO save(@RequestBody TransactionDAO transactionDAO);
     @GetMapping(value = APP_ROOT+"transactions/findById/{idTransaction}",produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(value = "Rechercher une transaction", notes=" cette methode permet de rechercher une transaction par son ID",response = TransactionDAO.class)
     @ApiResponses(value = {

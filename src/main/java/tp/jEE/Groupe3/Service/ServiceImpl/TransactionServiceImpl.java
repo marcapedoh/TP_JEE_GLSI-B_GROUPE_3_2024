@@ -28,20 +28,6 @@ public class TransactionServiceImpl implements TransactionServices {
     }
 
     @Override
-    public TransactionDAO save(TransactionDAO transactionDAO) {
-        List<String> errors= TransactionValidator.validate(transactionDAO);
-        if(!errors.isEmpty()){
-            log.warn("object not valid");
-            throw new InvalidEntityException("la transaction n'est pas valide", ErrorCodes.TRANSACTION_NOT_VALID,errors);
-        }
-        return TransactionDAO.fromEntity(
-                transactionRepository.save(
-                        TransactionDAO.toEntity(transactionDAO)
-                )
-        );
-    }
-
-    @Override
     public TransactionDAO findById(Integer id) {
         if(id==null){
             log.error("vous passez une id nul pour faire une recherche en bD");

@@ -18,12 +18,6 @@ public class TransactionController implements TransactionAPI {
     public TransactionController(TransactionServices transactionServices) {
         this.transactionServices = transactionServices;
     }
-
-    @Override
-    public TransactionDAO save(TransactionDAO transactionDAO) {
-        return transactionServices.save(transactionDAO);
-    }
-
     @Override
     public TransactionDAO findById(Integer id) {
         return transactionServices.findById(id);

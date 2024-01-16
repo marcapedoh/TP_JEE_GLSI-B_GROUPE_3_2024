@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CompteValidator {
+
     public static List<String> validate(CompteDAO compteDAO){
         List<String> errors= new ArrayList<>();
         if(compteDAO==null){
