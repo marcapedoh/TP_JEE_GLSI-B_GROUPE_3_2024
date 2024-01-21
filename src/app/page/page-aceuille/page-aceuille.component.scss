@@ -1,0 +1,30 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+    scroll-behavior: smooth;
+    list-style: none;
+    text-decoration: none;
+  }
+.card{
+    margin-right: 7px;  
+    background-color: rgba(0,0,0,0.1);
+}
+
+.card_color{
+    margin-right: 7px;
+    background-color: rgba(201, 193, 193, 0.795);
+}
+ 
+.white-color{
+    color: white;
+}
+
+
+.min-height-600 {
+  min-height: 100vh;
+}
+.no-flex-wrap {
+  flex-wrap: inherit !important;
+}

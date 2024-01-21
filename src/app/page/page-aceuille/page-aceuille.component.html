@@ -1,0 +1,33 @@
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,500;0,600;0,700;0,800;0,900;1,300;1,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
+</head>
+<body>
+    <div class="row min-height-600 no-flex-wrap">
+        <div class="card col-md-2 mr-2 zap-color">
+          <div class="col pl-0 pr-0">
+                <h4 class="mt-3 mb-3 bordernone text-center  white-color">EGA-Bank</h4>
+            <div>
+                <app-menu></app-menu>
+              </div>
+          </div>
+        </div>
+        <div class="col-md-10 pl-0 pr-3 backgroundgrey bordernone">
+            <div class="col pl-0 pr-0  d-flex flex-column ">
+                <div class="card_color p-3 min-height-80 mb-2 zap-color">
+                    <app-header></app-header>
+                </div>
+                <div class="card_color mb-2 zap-color"  style="min-height:720px">
+                    
+                    <router-outlet></router-outlet>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</body>
+  
+  
+  

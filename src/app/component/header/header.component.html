@@ -1,0 +1,24 @@
+<div class="row">
+    <div class="col-md-8">
+        <div class="input-group flex-nowrap">
+            <input type="text" class="form-control"  placeholder="Rechercher..."   aria-label="Username" aria-describedby="addon-wrapping">
+            <span class="input-group-text" id="addon-wrapping"> <i class='bx bx-search'></i></span>
+            
+        </div>
+        <div  *ngIf="" class="autoComplete shadow p-3 mb-5 bg-white rounded m-0 p-0">
+            <p class="p-1" ><b></b> &nbsp; </p>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="row">
+            <div class="col-md-9 text-end">
+                <span class="white-color">Bonjour &nbsp;</span>
+            </div>
+            <div class="col-md-3">
+                <a href="javascript:void(0);" [routerLink]="['/pageProfil']">
+                    <img src="assets/personne.png" width="50px" height="50px" lass="rounded-circle"/>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

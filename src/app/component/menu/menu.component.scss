@@ -1,0 +1,43 @@
+.accordion-header{
+
+    button{
+        background-color: rgba(0,0,0,0.1);
+    }
+}
+
+.accordion-item{
+    background-color: rgba(0,0,0,0.1);
+}
+@media (max-width: 350px) {
+    .accordion .card-header {
+      padding: 0.5rem;
+    }
+    
+    .accordion .accordion-button {
+      font-size: 14px;
+      padding: 0.5rem;
+    }
+    
+    .accordion .list-group-item {
+      padding: 0.5rem;
+    }
+  }
+  @media (min-width: 1024px) {
+    /* Styles pour les écrans de largeur minimale de 768 pixels */
+    .accordion .card-header {
+        padding: 0.5rem;
+      }
+      
+      .accordion .accordion-button {
+        font-size: 14px;
+        padding: 0.5rem;
+      }
+      
+      .accordion .list-group-item {
+        padding: 0.5rem;
+      }
+  }
+
+.white_color{
+    color: white;
+}

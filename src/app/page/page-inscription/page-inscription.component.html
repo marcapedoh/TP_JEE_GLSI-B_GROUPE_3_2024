@@ -1,0 +1,51 @@
+<div class="container my-container">
+    <div class="card justify-content-md-center">
+        <div class="card-header text-center">
+          <h3 class="color"> Créer votre compte Ici </h3>
+        </div>
+        <div class="card-body">
+          <div class="alert alert-danger" *ngIf="">
+            <div >
+              <span ></span><br>
+            </div>
+          </div>
+            <div class="mb-3">
+              <input type="text" class="form-control" placeholder="Nom" >
+               
+              </div>
+              <div class="mb-3">
+                <input type="text" class="form-control" placeholder="Prenom" >
+              </div>
+              <div class="mb-3">
+                <input type="text" class="form-control" placeholder="Adresse" >
+              </div>
+              <div class="mb-3">
+                <input type="text" class="form-control" placeholder="NumeroTel">
+              </div>
+              <div class="mb-3">
+                <input type="text" class="form-control" placeholder="couriel" >
+              </div>
+              <div class="mb-3">
+                <input type="text" class="form-control" placeholder="Nationalité" >
+              </div>
+              <div class="mb-3">
+                <input type="text" class="form-control" placeholder="Username" >
+              </div>
+              <div class="mb-3">
+                <input type="password" class="form-control" placeholder="Mot de passe" >
+              </div>
+              <div class="mb-3">
+                <input type="password" class="form-control" placeholder="Confirmer votre Mot de passe">
+              </div>
+              <div class="alert alert-danger" *ngIf="">Les mots de passe ne correspondent pas.</div>
+            
+              <div class="mb-3 d-flex justify-content-between">
+                <a [routerLink]="['login']" class="btn btn-link">Se connecter</a>
+                <button type="button" class="btn btn-primary" >
+                    <i class="fa-solid fa-check"></i>&nbsp;
+                    S'inscrire
+                </button>
+              </div>
+        </div>
+      </div>
+</div>
