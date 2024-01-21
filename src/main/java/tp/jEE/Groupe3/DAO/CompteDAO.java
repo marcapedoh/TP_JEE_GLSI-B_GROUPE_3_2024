@@ -23,20 +23,24 @@ import java.util.List;
 @Builder
 public class CompteDAO {
     private Integer id;
-    private Iban numeroCpt;
     private TypeCompte typeCompte;
+    private String numeroCpt;
     private double solde;
     private String codePin;
     private ClientDAO client;
     @JsonIgnore
     private List<Transaction> transactionList;
+
+
+
     public static CompteDAO fromEntity(Compte compte){
         if(compte==null){
             return null;
         }
         return CompteDAO.builder()
-                .numeroCpt(compte.getNumeroCpt())
+                .id(compte.getId())
                 .typeCompte(compte.getTypeCompte())
+                .numeroCpt(compte.getNumeroCpt())
                 .solde(compte.getSolde())
                 .codePin(compte.getCodePin())
                 .client(ClientDAO.fromEntity(compte.getClient()))
@@ -49,12 +53,18 @@ public class CompteDAO {
         }
         Compte compte=new Compte();
         compte.setId(compteDAO.getId());
-        compte.setNumeroCpt(compteDAO.getNumeroCpt());
+        compte.setNumeroCpt(getNumeroCptDAO());
         compte.setTypeCompte(compteDAO.getTypeCompte());
-        compte.setCodePin(compte.getCodePin());
+        compte.setCodePin(compteDAO.getCodePin());
         compte.setSolde(compteDAO.getSolde());
         compte.setClient(ClientDAO.toEntity(compteDAO.getClient()));
         return compte;
+    }
+
+    public static String getNumeroCptDAO(){
+        Iban iban = Iban.random();
+
+        return iban.toString();
     }
 }
 

@@ -16,7 +16,7 @@ import static tp.jEE.Groupe3.Constant.Utils.APP_ROOT;
 
 @Api(APP_ROOT+"comptes")
 public interface CompteAPI {
-    @PostMapping(value = APP_ROOT+"comptes/create/{typeCompte}",consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = APP_ROOT+"comptes/create",consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(value = "enregistrer un compte", notes=" cette methode permet d'enregistrer et modifier un compte",response = CompteDAO.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200,message = "l'object compte a ete bien crée ou modifer")
@@ -35,21 +35,21 @@ public interface CompteAPI {
             @ApiResponse(code = 200,message = "la transaction a été trouvé dans la base de donnée"),
             @ApiResponse(code=404,message = "aucune transaction n'est trouvé dans la base de donnée")
     })
-    CompteDAO findByNumeroCpt(@PathVariable("iban") Iban iban);
+    CompteDAO findByNumeroCpt(@PathVariable("iban") String iban);
     @GetMapping(value = APP_ROOT+"comptes/rechargerCompte/{montant}/{iban}",produces = MediaType.APPLICATION_JSON_VALUE)
-    boolean rechargerCompte(@PathVariable("montant") double montant,@PathVariable("iban") Iban iban);
+    boolean rechargerCompte(@PathVariable("montant") double montant,@PathVariable("iban") String iban);
     @GetMapping(value = APP_ROOT+"comptes/faireRetrait/{montant}/{iban}",produces = MediaType.APPLICATION_JSON_VALUE)
-    boolean faireRetrait(@PathVariable("montant") double montant,@PathVariable("iban") Iban iban);
+    boolean faireRetrait(@PathVariable("montant") double montant,@PathVariable("iban") String iban);
 
 
     @PostMapping(value = APP_ROOT+"comptes/faireVirement/{iban1}/{iban2}/{montant}",produces = MediaType.APPLICATION_JSON_VALUE)
-    TransactionDAO faireVirement(@PathVariable("iban1") Iban iban1,@PathVariable("iban2") Iban iban2,@PathVariable("montant") double montant);
+    TransactionDAO faireVirement(@PathVariable("iban1") String iban1,@PathVariable("iban2") String iban2,@PathVariable("montant") double montant);
     @GetMapping(value = APP_ROOT+"comptes/all",produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(value = "Renvoi la liste des comptes", notes=" cette methode permet de retourner des comptes ",responseContainer = "List<CompteDAO>")
     @ApiResponses(value = {
             @ApiResponse(code = 200,message = "liste des comptes/liste vide")
     })
     List<CompteDAO> findAll();
-    @DeleteMapping(value = APP_ROOT+"/comptes/delete/{id}")
+    @DeleteMapping(value = APP_ROOT+"comptes/delete/{id}")
     void delete(@PathVariable("id") Integer id);
 }

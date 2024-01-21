@@ -7,6 +7,7 @@ import tp.jEE.Groupe3.Controller.API.TransactionAPI;
 import tp.jEE.Groupe3.DAO.TransactionDAO;
 import tp.jEE.Groupe3.Service.TransactionServices;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -18,6 +19,22 @@ public class TransactionController implements TransactionAPI {
     public TransactionController(TransactionServices transactionServices) {
         this.transactionServices = transactionServices;
     }
+
+    @Override
+    public List<TransactionDAO> findAllPerPeriod(LocalDate dateDebut, LocalDate dateFin) {
+        return transactionServices.findAllPerPeriod(dateDebut,dateFin);
+    }
+
+    @Override
+    public List<TransactionDAO> findAllByClientIdBetweenDate(LocalDate dateDebut, LocalDate dateFin, Integer id) {
+        return transactionServices.findAllByClientIdBetweenDate(dateDebut,dateFin,id);
+    }
+
+    @Override
+    public List<TransactionDAO> findAllByClientId(Integer id) {
+        return transactionServices.findAllByClientId(id);
+    }
+
     @Override
     public TransactionDAO findById(Integer id) {
         return transactionServices.findById(id);
@@ -33,8 +50,4 @@ public class TransactionController implements TransactionAPI {
         return transactionServices.findAll();
     }
 
-    @Override
-    public void delete(Integer id) {
-        transactionServices.delete(id);
-    }
 }

@@ -18,9 +18,6 @@ public class CompteValidator {
         if(compteDAO.getTypeCompte()==null){
             errors.add("vous ne pouvez pas créé un compte sans ajouté");
         }
-        if(compteDAO.getNumeroCpt()==null){
-            errors.add("bon là ne numero de compte doit enregistré");
-        }
         return  errors;
     }
 }

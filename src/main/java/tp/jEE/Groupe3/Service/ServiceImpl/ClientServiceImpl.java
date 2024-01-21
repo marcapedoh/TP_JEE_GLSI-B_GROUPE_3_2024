@@ -8,7 +8,9 @@ import tp.jEE.Groupe3.DAO.ClientDAO;
 import tp.jEE.Groupe3.Exception.EntityNotFoundException;
 import tp.jEE.Groupe3.Exception.ErrorCodes;
 import tp.jEE.Groupe3.Exception.InvalidEntityException;
+import tp.jEE.Groupe3.Exception.InvalidOperationException;
 import tp.jEE.Groupe3.Repository.ClientRepository;
+import tp.jEE.Groupe3.Repository.CompteRepository;
 import tp.jEE.Groupe3.Service.ClientServices;
 import tp.jEE.Groupe3.Validator.ClientValidator;
 
@@ -20,10 +22,14 @@ import java.util.stream.Collectors;
 @Slf4j
 public class ClientServiceImpl implements ClientServices {
     private ClientRepository clientRepository;
+    private CompteRepository compteRepository;
+
+
 
     @Autowired
-    public ClientServiceImpl(ClientRepository clientRepository) {
+    public ClientServiceImpl(ClientRepository clientRepository,CompteRepository compteRepository) {
         this.clientRepository = clientRepository;
+        this.compteRepository=compteRepository;
     }
 
 
@@ -60,8 +66,8 @@ public class ClientServiceImpl implements ClientServices {
         if(id==null){
             log.error("vous passez un id null pour faire la recherche");
         }
-        if(clientRepository.findAllCompte(id)==null){
-            log.error("vous ne pouvez pas supprimé cet objet parceque l'objet est relié à d'autre!");
+        if(compteRepository.findCompteByClientId(id)!=null){
+            throw new InvalidOperationException("Vous ne pouvez pas supprimé un client qui relié à des comptes");
         }
         assert id != null;
         clientRepository.deleteById(id);

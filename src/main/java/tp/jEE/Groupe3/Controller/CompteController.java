@@ -32,22 +32,22 @@ public class CompteController implements CompteAPI {
     }
 
     @Override
-    public CompteDAO findByNumeroCpt(Iban iban) {
+    public CompteDAO findByNumeroCpt(String iban) {
         return compteServices.findByNumeroCpt(iban);
     }
 
     @Override
-    public boolean rechargerCompte(double montant, Iban iban) {
+    public boolean rechargerCompte(double montant, String iban) {
         return compteServices.rechargerCompte(montant,iban);
     }
 
     @Override
-    public TransactionDAO faireVirement(Iban iban1, Iban iban2, double montant) {
+    public TransactionDAO faireVirement(String iban1, String iban2, double montant) {
         return compteServices.faireVirement(iban1,iban2,montant);
     }
 
     @Override
-    public boolean faireRetrait(double montant, Iban iban) {
+    public boolean faireRetrait(double montant, String iban) {
         return compteServices.faireRetrait(montant,iban);
     }
 

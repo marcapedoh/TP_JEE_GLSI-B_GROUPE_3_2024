@@ -11,10 +11,11 @@ import java.util.List;
 public interface CompteServices {
     CompteDAO save(CompteDAO compteDAO);
     CompteDAO findById(Integer id);
-    CompteDAO findByNumeroCpt(Iban iban);
-    boolean rechargerCompte(double montant, Iban iban);
-    TransactionDAO faireVirement(Iban iban1, Iban iban2, double montant);
-    boolean faireRetrait(double montant,Iban iban);
+    CompteDAO findByNumeroCpt(String iban);
+    boolean rechargerCompte(double montant, String iban);
+    TransactionDAO faireVirement(String iban1, String iban2, double montant);
+    boolean faireRetrait(double montant,String iban);
+
     List<CompteDAO> findAll();
     void delete(Integer id);
 }

@@ -13,6 +13,8 @@ import tp.jEE.Groupe3.Repository.TransactionRepository;
 import tp.jEE.Groupe3.Service.TransactionServices;
 import tp.jEE.Groupe3.Validator.TransactionValidator;
 import tp.jEE.Groupe3.models.Transaction;
+
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -55,16 +57,28 @@ public class TransactionServiceImpl implements TransactionServices {
     }
 
     @Override
-    public void delete(Integer id) {
-        if (id==null){
-            log.error("vous passer un id null en paramettre pour une suppression");
-            return;
+    public List<TransactionDAO> findAllPerPeriod(LocalDate dateDebut, LocalDate dateFin) {
+        if(dateDebut == null || dateFin == null){
+            log.warn("les intervales de temps ne sont pas renseigné");
         }
-        Optional<Transaction> transaction=transactionRepository.findById(id);
-        if (transaction.get().getCompte()==null && transaction.get().getCompte().getClient()==null){
-            transactionRepository.deleteById(id);
-        }else{
-            throw new InvalidOperationException("vous ne pouvez pas supprimé une transaction qui est lié à des comptes et à des clients");
-        }
+        return transactionRepository.findAllBetweenDate(dateDebut,dateFin).stream()
+                .map(TransactionDAO::fromEntity)
+                .collect(Collectors.toList());
     }
+
+    @Override
+    public List<TransactionDAO> findAllByClientId(Integer id) {
+        return transactionRepository.findAllByClientId(id).stream()
+                .map(TransactionDAO::fromEntity)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<TransactionDAO> findAllByClientIdBetweenDate(LocalDate dateDebut, LocalDate dateFin, Integer id) {
+        return transactionRepository.findAllByClientIdBetweenDate(dateDebut,dateFin,id).stream()
+                .map(TransactionDAO::fromEntity)
+                .collect(Collectors.toList());
+    }
+
+
 }

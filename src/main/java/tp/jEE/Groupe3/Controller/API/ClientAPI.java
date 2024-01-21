@@ -38,6 +38,6 @@ public interface ClientAPI {
             @ApiResponse(code = 200,message = "liste des clients/liste vide")
     })
     List<ClientDAO> findALl();
-    @DeleteMapping(value = APP_ROOT+"/clients/delete/{id}")
-    void delete(Integer id);
+    @DeleteMapping(value = APP_ROOT+"clients/delete/{id}")
+    void delete(@PathVariable("id") Integer id);
 }

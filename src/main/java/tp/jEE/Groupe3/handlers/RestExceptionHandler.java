@@ -29,11 +29,12 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(InvalidOperationException.class)
     public ResponseEntity<ErrorDAO> handleException(InvalidOperationException exception, WebRequest webRequest) {
 
-        final HttpStatus notFound = HttpStatus.BAD_REQUEST;
+        final HttpStatus notFound = HttpStatus.valueOf(500);
         final ErrorDAO errorDto = ErrorDAO.builder()
                 .code(exception.getErrorCodes())
                 .httpCode(notFound.value())
                 .message(exception.getMessage())
+                .errors(exception.getErrors())
                 .build();
 
         return new ResponseEntity<>(errorDto, notFound);
