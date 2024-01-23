@@ -9,6 +9,13 @@ import { PageAceuilleComponent } from './page/page-aceuille/page-aceuille.compon
 import { MenuComponent } from './component/menu/menu.component';
 import { HeaderComponent } from './component/header/header.component';
 import { LoaderComponent } from './component/loader/loader.component';
+import { PageDepotComponent } from './page/page-depot/page-depot.component';
+import { PageRetraitComponent } from './page/page-retrait/page-retrait.component';
+import { PageVirementComponent } from './page/page-virement/page-virement.component';
+import { PageCompteComponent } from './page/page-compte/page-compte.component';
+import { ConsultationTacheComponent } from './page/consultation-tache/consultation-tache.component';
+import { PageStatistiqueComponent } from './page/page-statistique/page-statistique.component';
+import { PageProfilComponent } from './page/page-profil/page-profil.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +25,14 @@ import { LoaderComponent } from './component/loader/loader.component';
     PageAceuilleComponent,
     MenuComponent,
     HeaderComponent,
-    LoaderComponent
+    LoaderComponent,
+    PageDepotComponent,
+    PageRetraitComponent,
+    PageVirementComponent,
+    PageCompteComponent,
+    ConsultationTacheComponent,
+    PageStatistiqueComponent,
+    PageProfilComponent
   ],
   imports: [
     BrowserModule,
