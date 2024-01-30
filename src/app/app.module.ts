@@ -16,6 +16,7 @@ import { PageCompteComponent } from './page/page-compte/page-compte.component';
 import { ConsultationTacheComponent } from './page/consultation-tache/consultation-tache.component';
 import { PageStatistiqueComponent } from './page/page-statistique/page-statistique.component';
 import { PageProfilComponent } from './page/page-profil/page-profil.component';
+import { DetailCompteComponent } from './component/detail-compte/detail-compte.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { PageProfilComponent } from './page/page-profil/page-profil.component';
     PageCompteComponent,
     ConsultationTacheComponent,
     PageStatistiqueComponent,
-    PageProfilComponent
+    PageProfilComponent,
+    DetailCompteComponent
   ],
   imports: [
     BrowserModule,

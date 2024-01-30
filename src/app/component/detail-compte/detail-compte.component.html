@@ -1,0 +1,73 @@
+<div class="row mb-1 mr-0 custom_border">
+
+    <!--Detail compte-->
+    <div class="col-md-4 mb-1 mt-1 border-right">
+        <div class="col">
+            <div class="row">
+                <div class="mr-2">
+                    <i class="fas fa-circle-info blue-color"></i> {{detailCompte.numeroCOmpte}}&nbsp;
+                </div>
+                   
+            </div>    
+            <div class="row">
+                <div class="mr-2">
+                    <i class="fas fa-circle-info blue-color"></i> {{detailCompte.code_pin.substring(8)}}&nbsp;
+                </div>
+                    <div></div>
+            </div>
+                <div class="row"> 
+                    <div class="mr-2">
+                        <i class="fas fa-dollar-sign blue-color"></i> {{detailCompte.solde}}&nbsp;
+                    </div>
+                </div>
+        </div>
+    </div>
+        <!--Type Compte-->
+    <div class="col-md-3 mb-1 mt-1 border-right">
+        <div class="row">
+            <div class="col-md-2">
+                <i class="fas fa-flag-checkered blue-color"></i>&nbsp;
+            </div>
+            <div class="col-md-10">
+                <div class="row">
+                    <div class="col-md-12"><h5>Type de compte</h5> &nbsp; {{detailCompte.typeCompte}}</div>
+                </div>
+            </div>    
+        </div>
+    </div>
+
+        <!--bouttons d'actions-->
+    <div class="col-md-3 mb-1 mt-1 ">
+        <div class="row">
+            <div class="col-md-5">
+                <button type="button" class="btn btn-link" >
+                    <i class="fas fa-pencil-alt blue-color"></i>&nbsp;Modifier
+                </button>
+            </div>
+            <div class="col-md-5">
+                <button type="button" class="btn btn-link text-danger" data-bs-toggle="modal" [attr.data-bs-target]="'#modalDeleteidArticle'">
+                    <i class="fas fa-trash-alt red-color"></i>&nbsp;Supprimer
+                </button>
+            </div>
+          
+        </div>
+    </div>
+    <div class="modal fade" id="modalDeleteidArticle" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="staticBackdropLabel">Confirmation</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              Voulez-vous réelement supprimé ce contenu?
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"> <i class="fas fa-ban"></i>&nbsp; Annuler</button>
+              <button type="button" class="btn btn-danger" data-bs-dismiss="modal" ><i class="fas fa-trash-alt"></i>&nbsp;Supprimer</button>
+            </div>
+          </div>
+        </div>
+    </div>
+</div>
+
