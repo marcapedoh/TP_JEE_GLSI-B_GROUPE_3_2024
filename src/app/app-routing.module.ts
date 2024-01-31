@@ -10,6 +10,8 @@ import { PageCompteComponent } from './page/page-compte/page-compte.component';
 import { ConsultationTacheComponent } from './page/consultation-tache/consultation-tache.component';
 import { PageStatistiqueComponent } from './page/page-statistique/page-statistique.component';
 import { PageProfilComponent } from './page/page-profil/page-profil.component';
+import { ListeClientComponent } from './page/liste-client/liste-client.component';
+import { ListeTranactionsComponent } from './page/liste-tranactions/liste-tranactions.component';
 
 
 const routes: Routes = [
@@ -53,6 +55,14 @@ const routes: Routes = [
       {
         path: 'pageProfil',
         component: PageProfilComponent 
+      },
+      {
+        path:'listeClient',
+        component:ListeClientComponent
+      },
+      {
+        path:'listeTransactions',
+        component:ListeTranactionsComponent
       }
     ]
   }

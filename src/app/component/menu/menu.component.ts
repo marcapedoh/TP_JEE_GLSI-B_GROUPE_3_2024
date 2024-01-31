@@ -66,10 +66,31 @@ export class MenuComponent implements OnInit {
       role:'USER',
       sousMenu:[
         {
-          id:'21',
+          id:'31',
           titre:'Etat statistiques',
           icon:'bx bx-bar-chart',
           url:'statistique',
+        }
+      ]
+    },
+    {
+      id:'4',
+      titre:'Admin',
+      icon:'bx bx-scatter-chart',
+      url:'',
+      role:'ADMIN',
+      sousMenu:[
+        {
+          id:'41',
+          titre:'Liste clients',
+          icon:'bx bx-bar-chart',
+          url:'listeClient',
+        },
+        {
+          id:'42',
+          titre:'Liste Transactions',
+          icon:'bx bx-bar-chart',
+          url:'listeTransactions',
         }
       ]
     }
