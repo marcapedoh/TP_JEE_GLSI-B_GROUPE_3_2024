@@ -6,11 +6,6 @@
             </div>
             <div class="mb-3">
                 <h2>{{utilisateur.nom}}&nbsp;{{utilisateur.prenom}}</h2>
-                <small class="form-text text-muted">{{utilisateur.ville}}&nbsp;{{utilisateur.pays}}&nbsp;{{utilisateur.codePostale}}</small>
-            </div>
-            <div class="col d-flex text-center mb-3">
-                <button type="button" class="btn btn-success"><i class="fas fa-pencil-alt"></i>&nbsp;Modifier le profil</button>&nbsp;&nbsp;&nbsp;
-                <button type="button" class="btn btn-warning" (click)="changerMotDePasse()"><i class="fas fa-lock"></i>&nbsp;Changer le mot de passe</button>
             </div>
          </div>
     </div>
@@ -23,11 +18,7 @@
               </tr>
               <tr>
                 <th scope="row">Email</th>
-                <td>{{utilisateur.mail}}</td>
-              </tr>
-              <tr>
-                <th scope="row">Adresse</th>
-                <td>{{utilisateur.ville}}&nbsp;{{utilisateur.pays}}&nbsp;{{utilisateur.codePostale}}</td>
+                <td>{{utilisateur.couriel}}</td>
               </tr>
               <tr>
                 <th scope="row">Mot de passe</th>
@@ -36,4 +27,25 @@
             </tbody>
           </table>
     </div>
+</div>
+
+<div class="row m-3 mt-3 justify-content-center">
+  <div class="card col-md-7">
+    <table class="table">
+      <tbody>
+        <tr>
+          <th scope="row">Numero Compte</th>
+          <td>{{compte.numeroCpt}}</td>
+        </tr>
+        <tr>
+          <th scope="row">Type compte</th>
+          <td>{{compte.typeCompte}}</td>
+        </tr>
+        <tr>
+          <th scope="row">Code Pin</th>
+          <td>{{compte.codePin?.substring(0, 20) + '...'}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>

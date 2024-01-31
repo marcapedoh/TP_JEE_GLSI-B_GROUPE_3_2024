@@ -1,1 +1,51 @@
-<p>page-depot works!</p>
+<div class="col mb-3">
+    <hr>
+    <div class="col-md-12 p-3">
+        <div class="col-md-12 mb-3">
+            <h2><i class='bx bx-info-circle' style='color:#1c169d' ></i>&nbsp;Faire dépôt</h2>
+        </div> 
+        <div class="col-md-12">
+            <div class="alert alert-danger" *ngIf="">
+                <div *ngFor="">
+                    <span></span>
+                </div>
+            </div>
+            <form>
+                <div class="row mb-3">
+                    <div class="col">
+                        <input type="text" class="form-control" name="numero de compte"  placeholder="numero de compte" aria-label="Iban account number">
+                    </div>
+                    <div class="col">
+                        <input type="number" class="form-control" name="montant"  placeholder="Montant" aria-label="montant">
+                    </div>
+                </div>
+                
+            </form>
+        </div> 
+        <div class="col-md-6 text-start">
+            <button class="btn btn-danger" >
+                <i class="fas fa-ban blue white-color"></i>&nbsp;Annuler
+            </button>&nbsp;&nbsp;
+            <button class="btn btn-success" data-bs-toggle="modal" [attr.data-bs-target]="'#modalDeleteidArticle'+compte.id" >
+                <i class="fas fa-save blue white-color"></i>&nbsp;Effectuer
+            </button>
+        </div>
+    </div>
+    <div class="modal fade" id="modalDeleteidArticle{{compte.id}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="staticBackdropLabel">Confirmation</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                //TODO ajoute le libeele de la transaction
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"> <i class="fas fa-ban"></i>&nbsp; Annuler</button>
+              <button type="button" class="btn btn-danger" data-bs-dismiss="modal"><i class="fas fa-trash-alt"></i>&nbsp;Supprimer</button>
+            </div>
+          </div>
+        </div>
+    </div>
+</div>

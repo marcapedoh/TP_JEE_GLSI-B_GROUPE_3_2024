@@ -17,6 +17,11 @@ import { ConsultationTacheComponent } from './page/consultation-tache/consultati
 import { PageStatistiqueComponent } from './page/page-statistique/page-statistique.component';
 import { PageProfilComponent } from './page/page-profil/page-profil.component';
 import { DetailCompteComponent } from './component/detail-compte/detail-compte.component';
+import { HttpClientModule } from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
+import { BouttonActionComponent } from './component/boutton-action/boutton-action.component';
+import { ListeClientComponent } from './page/liste-client/liste-client.component';
+import { ListeTranactionsComponent } from './page/liste-tranactions/liste-tranactions.component';
 
 @NgModule({
   declarations: [
@@ -34,11 +39,16 @@ import { DetailCompteComponent } from './component/detail-compte/detail-compte.c
     ConsultationTacheComponent,
     PageStatistiqueComponent,
     PageProfilComponent,
-    DetailCompteComponent
+    DetailCompteComponent,
+    BouttonActionComponent,
+    ListeClientComponent,
+    ListeTranactionsComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    HttpClientModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

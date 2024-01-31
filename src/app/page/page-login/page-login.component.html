@@ -1,20 +1,23 @@
 <div class="container my-container">
     <div class="card justify-content-md-center">
       <div class="card-header text-center">
-        <h3>Se connecter</h3>
+        <h3 style="color:white">Se connecter</h3>
       </div>
       <div class="card-body">
-        <div class="alert alert-danger" *ngIf="">
+        <div class="alert alert-danger" *ngIf="errorMsg.length>0">
+          <div *ngFor="let msg of errorMsg">
+            <span >{{errorMsg}}</span>
+          </div>
+      </div>
+        <div class="mb-3">
+          <input type="email" class="form-control" placeholder="E-mail" [(ngModel)]="authRequest.username">
         </div>
         <div class="mb-3">
-          <input type="email" class="form-control" placeholder="E-mail">
-        </div>
-        <div class="mb-3">
-          <input type="password" class="form-control" placeholder="Mot de passe">
+          <input type="password" class="form-control" placeholder="Mot de passe" [(ngModel)]="authRequest.motDePasse">
         </div>
         <div class="mb-3 d-flex justify-content-between">
           <a [routerLink]="['/inscription']" class="btn btn-link">S'inscrire</a>
-          <button type="button" class="btn btn-primary" >
+          <button type="button" class="btn btn-primary" (click)="login()">
             <i class="fas fa-check"></i>&nbsp;Se connecter
           </button>
         </div>

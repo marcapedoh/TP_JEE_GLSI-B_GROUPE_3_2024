@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserService } from 'src/app/services/user-service/user.service';
-import { ClientControllerService, ClientDAO } from 'src/gs-api/src';
+import { ClientControllerService, ClientDAO, CompteDAO } from 'src/gs-api/src';
 
 @Component({
   selector: 'app-page-profil',
@@ -11,6 +11,8 @@ import { ClientControllerService, ClientDAO } from 'src/gs-api/src';
 export class PageProfilComponent implements OnInit {
 
   utilisateur:ClientDAO={}
+
+  compte:CompteDAO={}
 
   ngOnInit(): void {
       
