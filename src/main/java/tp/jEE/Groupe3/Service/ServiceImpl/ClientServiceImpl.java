@@ -55,6 +55,17 @@ public class ClientServiceImpl implements ClientServices {
     }
 
     @Override
+    public ClientDAO findByUsername(String username) {
+        if(!StringUtils.hasLength(username)){
+            log.error("la recherche ne peut pas aboutir parceque le username est null");
+        }
+        return clientRepository.findClientByUsername(username)
+                .map(ClientDAO::fromEntity)
+                .orElseThrow(()-> new EntityNotFoundException("aucun client n'est trouvé pour ce nom"));
+
+    }
+
+    @Override
     public List<ClientDAO> findALl() {
         return clientRepository.findAll().stream()
                 .map(ClientDAO::fromEntity)

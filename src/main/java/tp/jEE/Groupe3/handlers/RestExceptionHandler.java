@@ -25,7 +25,6 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         return  new ResponseEntity<>(errorDAO,notfound);
     }
 
-
     @ExceptionHandler(InvalidOperationException.class)
     public ResponseEntity<ErrorDAO> handleException(InvalidOperationException exception, WebRequest webRequest) {
 

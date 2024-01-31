@@ -22,7 +22,7 @@ public interface TransactionAPI {
             @ApiResponse(code=404,message = "aucune transaction n'est trouvé dans la base de donnée")
     })
     TransactionDAO findById(@PathVariable("idTransaction") Integer id);
-    @GetMapping(value = APP_ROOT+"transactions/findByLibelle/{lebelle}",produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = APP_ROOT+"transactions/findByLibelle/{libelle}",produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(value = "Rechercher une transaction", notes=" cette methode permet de rechercher une transaction par son libelle",response = TransactionDAO.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200,message = "la transaction a été trouvé dans la base de donnée"),
@@ -55,5 +55,5 @@ public interface TransactionAPI {
     @ApiResponses(value = {
             @ApiResponse(code = 200,message = "liste des transactions/liste vide")
     })
-    List<TransactionDAO> findAllByClientIdBetweenDate(LocalDate dateDebut, LocalDate dateFin,Integer id);
+    List<TransactionDAO> findAllByClientIdBetweenDate(@PathVariable("dateDebut") LocalDate dateDebut,@PathVariable("dateFin") LocalDate dateFin,@PathVariable("id") Integer id);
 }

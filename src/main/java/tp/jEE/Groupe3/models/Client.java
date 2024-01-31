@@ -36,7 +36,7 @@ public class Client extends AbstractEntity implements UserDetails {
     private String couriel;
     @Column(name = "nationalite",nullable = false)
     private String nationalite;
-    @Column(name = "username",nullable = false)
+    @Column(name = "username",nullable = false, unique = true)
     private  String username;
     @Column(name = "motDePasse",nullable = false)
     private String motDePasse;

@@ -34,6 +34,11 @@ public class ClientController implements ClientAPI {
     }
 
     @Override
+    public ClientDAO findByUsername(String username) {
+        return clientServices.findByUsername(username);
+    }
+
+    @Override
     public void delete(Integer id) {
         clientServices.delete(id);
     }

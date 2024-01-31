@@ -32,6 +32,14 @@ public interface ClientAPI {
             @ApiResponse(code=404,message = "aucun client n'est trouvé dans la base de donnée")
     })
     ClientDAO findByNom(@PathVariable("nom") String nom);
+
+    @GetMapping(value = APP_ROOT+"clients/findByUsername/{username}",produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(value = "Rechercher un client", notes=" cette methode permet de rechercher un client par son username",response = ClientDAO.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200,message = "le client a été trouvé dans la base de donnée"),
+            @ApiResponse(code=404,message = "aucun client n'est trouvé dans la base de donnée")
+    })
+    ClientDAO findByUsername(@PathVariable("username") String username);
     @GetMapping(value = APP_ROOT+"clients/all",produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(value = "Renvoi la liste des clients", notes=" cette methode permet de retourner des clients ",responseContainer = "List<ClientDAO>")
     @ApiResponses(value = {
