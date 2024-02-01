@@ -5,26 +5,26 @@
             <h2><i class='bx bx-info-circle' style='color:#1c169d' ></i>&nbsp;Information du compte</h2>
         </div> 
         <div class="col-md-12">
-            <div class="alert alert-danger" *ngIf="">
-                <div *ngFor="">
-                    <span></span>
+            <div class="alert alert-danger" *ngIf="errorMsg.length>0">
+                <div *ngFor="let error of errorMsg">
+                    {{error}}
                 </div>
             </div>
             <form>
                 <div class="row mb-3">
                     <div class="col">
-                        <input type="text" class="form-control" name="solde_compte"  placeholder="Solde initial" aria-label="code pin">
+                        <input type="text" class="form-control" name="solde_compte"  placeholder="Solde initial" [(ngModel)]="compte.solde" aria-label="code pin">
                     </div>
                     <div class="col">
-                        <input type="password" class="form-control" name="code_pin"  placeholder="Code Pin" aria-label="code pin">
+                        <input type="password" class="form-control" name="code_pin"  placeholder="Code Pin" aria-label="code pin" [(ngModel)]="compte.codePin">
                     </div>
                 </div>
                 <div class="row mb-3">
                     <div class="col-md-6">
-                        <select class="form-select" aria-label="Default select example" name="cat" >
-                            <option selected>selectionner un type de compte</option>
-                            <!--option *ngFor="" [value]="cat.id">{{cat.code}} - {{cat.designation}}</option-->
-                          </select>
+                        <select class="form-select" aria-label="Default select example" [(ngModel)]="compte.typeCompte" name="choix" >
+                            <option>COURANT</option>
+                            <option>EPARGNE</option>
+                        </select>
                     </div>
                 </div>
             </form>
@@ -33,7 +33,7 @@
             <button class="btn btn-danger" >
                 <i class="fas fa-ban blue white-color"></i>&nbsp;Annuler
             </button>&nbsp;&nbsp;
-            <button class="btn btn-success" >
+            <button class="btn btn-success" (click)="enregistrerSonCompte()" >
                 <i class="fas fa-save blue white-color"></i>&nbsp;Enregistrer
             </button>
         </div>

@@ -13,10 +13,10 @@
             <form>
                 <div class="row mb-3">
                     <div class="col">
-                        <input type="text" class="form-control" name="numero de compte"  placeholder="numero de compte" aria-label="Iban account number">
+                        <input type="text" class="form-control" name="numero de compte" [(ngModel)]="ibanAccountNumber"  placeholder="numero de compte" aria-label="Iban account number">
                     </div>
                     <div class="col">
-                        <input type="number" class="form-control" name="montant"  placeholder="Montant" aria-label="montant">
+                        <input type="number" class="form-control" name="montant"  placeholder="Montant" [(ngModel)]="montantRechargement" aria-label="montant">
                     </div>
                 </div>
                 
@@ -26,7 +26,7 @@
             <button class="btn btn-danger" >
                 <i class="fas fa-ban blue white-color"></i>&nbsp;Annuler
             </button>&nbsp;&nbsp;
-            <button class="btn btn-success" data-bs-toggle="modal" [attr.data-bs-target]="'#modalDeleteidArticle'+compte.id" >
+            <button class="btn btn-success" data-bs-toggle="modal" [attr.data-bs-target]="'#modalDeleteidArticle'+compte.id" (click)="faireDepot()" >
                 <i class="fas fa-save blue white-color"></i>&nbsp;Effectuer
             </button>
         </div>

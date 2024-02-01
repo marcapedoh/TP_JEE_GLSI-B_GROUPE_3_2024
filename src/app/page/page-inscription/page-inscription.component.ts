@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { throwError } from 'rxjs';
@@ -20,14 +21,14 @@ export class PageInscriptionComponent implements OnInit{
   errorMsg:Array<string>=[];
   confirmationMotDePasse:string='';
 
-  constructor(private utilisateurController:AuthenticationControllerService, private router:Router,private userService:UserService){}
+  constructor(private utilisateurController:AuthenticationControllerService, private router:Router,private userService:UserService, private http:HttpClient){}
 
   inscrire():void{
     if(this.confirmationMotDePasse !== this.register.motDePasse){
       this.errorMsg.push("les deux champs de mot de passe doivent être pareil");
       return ;
     }
-    this.utilisateurController.register(this.register).subscribe(monUser=>{
+    this.http.post('http://localhost:8080/EgaWebService/v1/auth/register',this.register).subscribe(monUser=>{
       this.connectUser();
       this.router.navigate(['/login']);
     },error=>{
