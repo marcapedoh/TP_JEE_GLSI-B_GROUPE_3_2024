@@ -1,7 +1,7 @@
 
 <div class="row m-3 mt-3">
     <div class="col-md-4 text-right">
-        <app-boutton-action></app-boutton-action>
+        <app-boutton-action (click)="saveInPdf()"></app-boutton-action>
     </div>
     <div class="card col-md-12">
         <table class="table">
@@ -16,13 +16,13 @@
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <th scope="row">1</th>
-                <td>2024-05-25</td>
-                <td>retrait de 15000</td>
-                <td>58000</td>
-                <td>COURANT</td>
-                <td>FR5438463484</td>
+              <tr *ngFor="let consult of listTransaction">
+                <th scope="row">{{consult.id}}</th>
+                <td>{{consult.dateCreation}}</td>
+                <td>{{consult.libelleTran?.substring(0, 20) + '...'}}</td>
+                <td>{{consult.montant}}</td>
+                <td>{{consult.typeTransaction}}</td>
+                <td>{{consult.compte?.numeroCpt}}</td>
               </tr>
             </tbody>
           </table>

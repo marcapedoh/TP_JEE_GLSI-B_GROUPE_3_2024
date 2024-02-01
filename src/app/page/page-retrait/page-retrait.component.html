@@ -5,21 +5,19 @@
             <h2><i class='bx bx-info-circle' style='color:#1c169d' ></i>&nbsp;Faire un retrait</h2>
         </div> 
         <div class="col-md-12">
-            <div class="alert alert-danger" *ngIf="">
-                <div *ngFor="">
-                    <span></span>
+            <div class="alert alert-sucess" *ngIf="errorMsg.length > 0">
+                <div *ngFor="let msg of errorMsg">
+                  <span >{{msg}}</span><br>
                 </div>
-            </div>
+              </div>
             <form>
                 <div class="row mb-3">
                     <div class="col">
-                        <input type="text" class="form-control" name="numero_de_compte_de_retrait"  placeholder="Numero de compte de retrait" aria-label="Iban account number">
+                        <input type="text" class="form-control" name="numero_de_compte_de_retrait"  placeholder="Numero de compte de retrait" [(ngModel)]="ibanForRetrait" aria-label="Iban account number">
                     </div>
+                    
                     <div class="col">
-                        <input type="text" class="form-control" name="numero de compte de depot"  placeholder="Numero de compte de depot" aria-label="Iban account number">
-                    </div>
-                    <div class="col">
-                        <input type="number" class="form-control" name="montant"  placeholder="Montant" aria-label="montant">
+                        <input type="number" class="form-control" name="montant"  placeholder="Montant" [(ngModel)]="montant" aria-label="montant">
                     </div>
                 </div>
                 
@@ -29,7 +27,7 @@
             <button class="btn btn-danger" >
                 <i class="fas fa-ban blue white-color"></i>&nbsp;Annuler
             </button>&nbsp;&nbsp;
-            <button class="btn btn-success" data-bs-toggle="modal" [attr.data-bs-target]="'#modalDeleteidArticle'+compte.id" >
+            <button class="btn btn-success" (click)="doRetrait()" data-bs-toggle="modal" [attr.data-bs-target]="'#modalDeleteidArticle'+compte.id" >
                 <i class="fas fa-save blue white-color"></i>&nbsp;Effectuer
             </button>
         </div>

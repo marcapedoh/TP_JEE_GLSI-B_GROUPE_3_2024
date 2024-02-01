@@ -5,11 +5,11 @@
             <h2><i class='bx bx-info-circle' style='color:#1c169d' ></i>&nbsp;Faire dépôt</h2>
         </div> 
         <div class="col-md-12">
-            <div class="alert alert-danger" *ngIf="">
-                <div *ngFor="">
-                    <span></span>
+            <div class="alert alert-sucess" *ngIf="errorMsg.length > 0">
+                <div *ngFor="let msg of errorMsg">
+                  <span >{{msg}}</span><br>
                 </div>
-            </div>
+              </div>
             <form>
                 <div class="row mb-3">
                     <div class="col">
@@ -26,12 +26,13 @@
             <button class="btn btn-danger" >
                 <i class="fas fa-ban blue white-color"></i>&nbsp;Annuler
             </button>&nbsp;&nbsp;
-            <button class="btn btn-success" data-bs-toggle="modal" [attr.data-bs-target]="'#modalDeleteidArticle'+compte.id" (click)="faireDepot()" >
+            <button class="btn btn-success" data-bs-toggle="modal" [attr.data-bs-target]="'#exampleModal'" (click)="faireDepot()" >
                 <i class="fas fa-save blue white-color"></i>&nbsp;Effectuer
             </button>
         </div>
     </div>
-    <div class="modal fade" id="modalDeleteidArticle{{compte.id}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
@@ -39,13 +40,13 @@
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                //TODO ajoute le libeele de la transaction
+                {{message}}
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"> <i class="fas fa-ban"></i>&nbsp; Annuler</button>
-              <button type="button" class="btn btn-danger" data-bs-dismiss="modal"><i class="fas fa-trash-alt"></i>&nbsp;Supprimer</button>
+              <button type="button" class="btn btn-success" data-bs-dismiss="modal"><i class="fas fa-check"></i>&nbsp;Ok</button>
             </div>
           </div>
         </div>
     </div>
+    
 </div>
