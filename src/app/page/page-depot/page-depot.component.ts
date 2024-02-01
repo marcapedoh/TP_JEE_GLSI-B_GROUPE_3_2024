@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { throwError } from 'rxjs';
 import { CompteControllerService, CompteDAO } from 'src/gs-api/src';
 
 @Component({
@@ -12,6 +13,7 @@ export class PageDepotComponent implements OnInit{
   ibanAccountNumber:string='';
   message='';
   montantRechargement:number=0;
+  errorMsg:Array<string>=[]
   ngOnInit(): void {
     this.faireDepot();
   }
@@ -20,6 +22,7 @@ export class PageDepotComponent implements OnInit{
   faireDepot():void{
     this.compteService.rechargerCompte(+this.montantRechargement, this.ibanAccountNumber).subscribe(res=>{
       this.message="Transaction Effectué";
+      this.errorMsg.push(this.message);
     })
   }
 
