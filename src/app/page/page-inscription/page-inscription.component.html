@@ -4,44 +4,54 @@
           <h3 style="color:white"> Créer votre compte Ici </h3>
         </div>
         <div class="card-body">
-          <div class="alert alert-danger" *ngIf="">
-            <div >
-              <span ></span><br>
+          <div class="alert alert-danger" *ngIf="errorMsg.length > 0">
+            <div *ngFor="let msg of errorMsg">
+              <span >{{msg}}</span><br>
             </div>
           </div>
-            <div class="mb-3">
-              <input type="text" class="form-control" placeholder="Nom" >
+            <div class="mb-3" style="scroll-behavior: smooth;">
+              <input type="text" class="form-control" placeholder="Nom" [(ngModel)]="register.nom" >
                
               </div>
               <div class="mb-3">
-                <input type="text" class="form-control" placeholder="Prenom" >
+                <input type="text" class="form-control" placeholder="Prenom" [(ngModel)]="register.prenom" >
               </div>
               <div class="mb-3">
-                <input type="text" class="form-control" placeholder="Adresse" >
+                <input type="date" class="form-control" placeholder="date Naissance" [(ngModel)]="register.dateNais" >
               </div>
               <div class="mb-3">
-                <input type="text" class="form-control" placeholder="NumeroTel">
+                <select class="form-select" aria-label="Default select example" [(ngModel)]="register.sexe" name="choix" >
+                  <option>MASCULIN</option>
+                  <option>FEMININ</option>
+              </select>
+              </div>
+              
+              <div class="mb-3">
+                <input type="text" class="form-control" placeholder="Adresse" [(ngModel)]="register.adresse" >
               </div>
               <div class="mb-3">
-                <input type="text" class="form-control" placeholder="couriel" >
+                <input type="text" class="form-control" placeholder="NumeroTel" [(ngModel)]="register.numeroTel">
               </div>
               <div class="mb-3">
-                <input type="text" class="form-control" placeholder="Nationalité" >
+                <input type="text" class="form-control" placeholder="couriel" [(ngModel)]="register.couriel" >
               </div>
               <div class="mb-3">
-                <input type="text" class="form-control" placeholder="Username" >
+                <input type="text" class="form-control" placeholder="Nationalité" [(ngModel)]="register.nationalite">
               </div>
               <div class="mb-3">
-                <input type="password" class="form-control" placeholder="Mot de passe" >
+                <input type="text" class="form-control" placeholder="Username" [(ngModel)]="register.username">
               </div>
               <div class="mb-3">
-                <input type="password" class="form-control" placeholder="Confirmer votre Mot de passe">
+                <input type="password" class="form-control" placeholder="Mot de passe" [(ngModel)]="register.motDePasse" >
               </div>
-              <div class="alert alert-danger" *ngIf="">Les mots de passe ne correspondent pas.</div>
+              <div class="mb-3">
+                <input type="password" class="form-control" placeholder="Confirmer votre Mot de passe" [(ngModel)]="confirmationMotDePasse">
+              </div>
+              <div class="alert alert-danger" *ngIf="confirmationMotDePasse !== register.motDePasse">Les mots de passe ne correspondent pas.</div>
             
               <div class="mb-3 d-flex justify-content-between">
-                <a [routerLink]="['login']" class="btn btn-link">Se connecter</a>
-                <button type="button" class="btn btn-primary" >
+                <a [routerLink]="['/login']" class="btn btn-link">Se connecter</a>
+                <button type="button" class="btn btn-primary" (click)="inscrire()">
                     <i class="fa-solid fa-check"></i>&nbsp;
                     S'inscrire
                 </button>
